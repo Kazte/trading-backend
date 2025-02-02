@@ -11,7 +11,6 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// Trade represents a trade event
 type Trade struct {
 	Symbol    string `json:"symbol"`
 	TradeID   string `json:"tradeId"`
@@ -21,14 +20,12 @@ type Trade struct {
 	Timestamp int64  `json:"timestamp"`
 }
 
-// Message represents a message containing trade data
 type Message struct {
 	Topic  string  `json:"topic"`
 	Symbol string  `json:"symbol"`
 	Data   []Trade `json:"data"`
 }
 
-// Upgrader is used to upgrade HTTP connections to WebSocket connections
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
 		return true
@@ -41,7 +38,6 @@ var (
 	lastPrice = 50000.0
 )
 
-// generateMockTrade generates a mock trade with random data
 func generateMockTrade(timestamp int64) Trade {
 	priceChange := rnd.Float64()*20 - 10 // price change between -10 and +10
 	lastPrice += priceChange
@@ -55,7 +51,6 @@ func generateMockTrade(timestamp int64) Trade {
 	}
 }
 
-// tradeStreamHandler handles WebSocket connections and streams trade data
 func tradeStreamHandler(c *gin.Context) {
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
